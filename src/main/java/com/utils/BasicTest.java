@@ -5,14 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.remote.RemoteWebDriver; // 1. Import RemoteWebDriver
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.AfterMethod;
@@ -21,107 +19,76 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.HashMap; // 2. Import HashMap
-import java.net.URL;      // 3. Import URL
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.Parameters;
+import org.openqa.selenium.edge.EdgeDriver;
 
+
+
+    
 public abstract class BasicTest {
    
     public static final Logger logger = LogManager.getLogger();
     protected static WebDriver driver;
     public static WebDriverWait wait;
     public static Actions action;
+    //WebDriver driver;
+    // private String driverPath;
 
-    // --- CẤU HÌNH LAMBDATEST ---
-    // (Lưu ý: AccessKey nên bảo mật, không nên hardcode nếu làm dự án thật)
-    public static final String USERNAME = "mdangdn29";
-    public static final String ACCESS_KEY = "LT_X9qDPgZAzpAuJHz7GS1Pt9XL5Pcg3jLTG98lN0CLCddjqXX";
-    public static final String GRID_URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@hub.lambdatest.com/wd/hub";
-    
-    // Đổi thành true để chạy trên LambdaTest, false để chạy Local trên máy
-    public boolean runOnLambdaTest = true; 
-
+    /**
+     * 
+     */
     @BeforeMethod
-    public void preCondition() { 
+    //@Parameters({"browser"})
+    public void preCondition(){ 
         
-        try {
-            if (runOnLambdaTest) {
-                // ==========================================
-                // 🚀 CẤU HÌNH CHẠY TRÊN LAMBDATEST
-                // ==========================================
-                ChromeOptions browserOptions = new ChromeOptions();
-                browserOptions.setPlatformName("Windows 10");
-                browserOptions.setBrowserVersion("latest"); // Nên để latest thay vì dev để ổn định
-
-                HashMap<String, Object> ltOptions = new HashMap<String, Object>();
-                ltOptions.put("username", USERNAME);
-                ltOptions.put("accessKey", ACCESS_KEY);
-                ltOptions.put("geoLocation", "SG");
-                ltOptions.put("video", true);
-                ltOptions.put("timezone", "Singapore");
-                ltOptions.put("build", "Bai30_TestfullLambda");
-                ltOptions.put("project", "Automation_Lambda");
-                ltOptions.put("selenium_version", "4.0.0");
-                ltOptions.put("w3c", true);
-                
-                browserOptions.setCapability("LT:Options", ltOptions);
-
-                // Khởi tạo RemoteWebDriver kết nối tới Server của LambdaTest
-                driver = new RemoteWebDriver(new URL(GRID_URL), browserOptions);
-
-            } else {
-                // ==========================================
-                // 💻 CẤU HÌNH CHẠY LOCAL (Code cũ của bạn)
-                // ==========================================
-                String browser = Constants.browser; // Đảm bảo bạn có class Constants
-                
-                if (browser.equalsIgnoreCase("chrome")) {
-                    WebDriverManager.chromedriver().setup();
-                    ChromeOptions options = new ChromeOptions();
-                    options.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
-                    options.setExperimentalOption("useAutomationExtension", false);
-                    
-                    if (Constants.headless){
-                        options.addArguments("--headless");
-                        options.addArguments("--window-size=1920,1080");
-                    }
-                    driver = new ChromeDriver(options);
-                }
-                else if (browser.equalsIgnoreCase("edge")) {
-                    WebDriverManager.edgedriver().setup();
-                    EdgeOptions options = new EdgeOptions();
-                    driver = new EdgeDriver(options);
-                }
-                else if (browser.equalsIgnoreCase("firefox")) {
-                    WebDriverManager.firefoxdriver().setup();
-                    FirefoxOptions options = new FirefoxOptions();
-                    driver = new FirefoxDriver(options);
-                }
-                
-                // Chỉ set size khi chạy local, LambdaTest tự handle resolution
-                Dimension targetSize = new Dimension(1366, 768);
-                driver.manage().window().setSize(targetSize);
-            }
-
-            // ==========================================
-            // CẤU HÌNH CHUNG (Wait, Action)
-            // ==========================================
-            // Driver dù là Local hay Remote thì đều dùng chung các lệnh dưới này
-            // driver.manage().window().maximize(); // Remote đôi khi không cần maximize nếu đã set resolution
+        String browser = Constants.browser;
+        
+        if (browser.equalsIgnoreCase("chrome")) {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions options = new ChromeOptions();
             
-            wait = new WebDriverWait(driver, Duration.ofSeconds(25)); 
-            action = new Actions(driver);
-
-        } catch (Exception e) {
-            System.out.println("Lỗi khởi tạo Driver: " + e.getMessage());
-            e.printStackTrace();
+            // 🚀 THÊM CÁC TÙY CHỌN ẨN DANH ĐỂ VƯỢT QUA CAPTCHA
+            options.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
+            options.setExperimentalOption("useAutomationExtension", false);
+            
+            //headless mode
+            if (Constants.headless){
+                options.addArguments("--headless");
+                options.addArguments("--window-size=1920,1080");
+            }
+            // options
+            driver = new ChromeDriver(options);
         }
-    }    @AfterMethod
+        else if (browser.equalsIgnoreCase("edge")) {
+            WebDriverManager.edgedriver().setup();
+            EdgeOptions options = new EdgeOptions();
+            driver = new EdgeDriver(options);
+        }
+        else if (browser.equalsIgnoreCase("firefox")) {
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions options = new FirefoxOptions();
+            //options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
+            driver = new FirefoxDriver(options);
+        }
+        
+        // Maximize the browser
+        driver.manage().window().maximize();
+
+
+         Dimension targetSize = new Dimension(1366, 768);
+        driver.manage().window().setSize(targetSize);
+        // 🚀 Đặt lại thời gian chờ mặc định (Thường là 10 giây là đủ)
+        wait = new WebDriverWait(driver, Duration.ofSeconds(25)); 
+                        // add driver action
+        action = new Actions(driver);
+
+    }
+
+    @AfterMethod
     public void postCondition(){
         // Quit the Browser
-        if (driver != null) {
-            driver.quit();
         //driver.quit();
-        }
     }
 
 
