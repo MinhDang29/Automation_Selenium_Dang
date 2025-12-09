@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +20,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Dimension;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-import org.testng.annotations.Parameters;
+//import java.util.concurrent.TimeUnit;
+//import org.testng.annotations.Parameters;
 import org.openqa.selenium.edge.EdgeDriver;
 
 
@@ -32,6 +33,7 @@ public abstract class BasicTest {
     protected static WebDriver driver;
     public static WebDriverWait wait;
     public static Actions action;
+    public static Select select;
     //WebDriver driver;
     // private String driverPath;
 
