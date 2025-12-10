@@ -51,13 +51,13 @@ public class Bai4_DropDown_Costom extends BasicTest {
         // Verify PIM loaded
         Assert.assertTrue(isElementDisplayed(PIMView));
         // Chọn dropdown Job Title
-        selectItemDropdown("//label[text()='Job Title']/parent::div/following-sibling::div//i","//div[@role='listbox']//span","QA Engineer");
+        selectItemDropdown("Job Title","//div[@role='listbox']//span","QA Engineer");
         // chọn Employment Status
-        selectItemDropdown("//label[text()='Employment Status']/parent::div/following-sibling::div//i","//div[@role='listbox']//span","Full-Time Contract");
+        selectItemDropdown("Employment Status","//div[@role='listbox']//span","Full-Time Contract");
         // chọn Sub Unit
-        selectItemDropdown("//label[text()='Sub Unit']/parent::div/following-sibling::div//i","//div[@role='listbox']//span","Engineering");
+        selectItemDropdown("Sub Unit","//div[@role='listbox']//span","Engineering");
         // chọn Include
-        selectItemDropdown("//label[text()='Include']/parent::div/following-sibling::div//i","//div[@role='listbox']//span","Current Employees Only");
+        selectItemDropdown("Include","//div[@role='listbox']//span","Current Employees Only");
         /*
          * 1. click vào element dropdown để xổ danh sách ra
          * 2. chờ cho đến khi các options trong dropdown được load ra hết
@@ -69,7 +69,7 @@ public class Bai4_DropDown_Costom extends BasicTest {
         // BƯỚC 1: Click vào mũi tên để mở Dropdown "Job Title" ra trước
         // (Nếu không click, list option sẽ không bao giờ xuất hiện để mà tìm)
         wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath(dropdownBy))).click();
+                By.xpath("//label[text()='" + dropdownBy + "']/parent::div/following-sibling::div//i"))).click();
 
         // BƯỚC 2: Chờ tất cả các option HIỆN RA (Dùng visibility)
         // XPath của bạn đúng, nhưng mình rút gọn lại chút cho dễ nhìn (OrangeHRM dùng
