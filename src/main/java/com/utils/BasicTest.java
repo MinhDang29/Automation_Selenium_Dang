@@ -76,6 +76,6 @@ public abstract class BasicTest {
     @AfterMethod
     public void postCondition(){
         // Quit the Browser
-        driver.quit();
+        //driver.quit();
     }
 }
