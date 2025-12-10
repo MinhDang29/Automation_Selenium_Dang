@@ -65,6 +65,8 @@ public class Bai4_DropDown_Costom extends BasicTest {
          * 4. nếu tìm thấy thì click item
          */
     }
+
+    // hàm  rút gòn dùng 4 dropdown chung
     public void selectItemDropdown(String dropdownBy, String optionsBy, String itemText) {
         // BƯỚC 1: Click vào mũi tên để mở Dropdown "Job Title" ra trước
         // (Nếu không click, list option sẽ không bao giờ xuất hiện để mà tìm)
