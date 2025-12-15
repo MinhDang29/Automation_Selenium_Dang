@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.utils.BasicTest;
+import com.utils.Utils;
 
 public class Topic12_Default_Checkbox_Radio extends BasicTest {
 
@@ -75,6 +76,26 @@ public void TC_02() {
         }
     }
 }
+       @Test
+    public void TC_03_Js() {
+        driver.get("https://login.ubuntu.com");
+
+        By newUserRadio = By.xpath("//*[@id='id_new_user']");
+        By acceptToCheckbox = By.xpath("//input[@id='id_accept_tos']");
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+
+        
+            jsExecutor.executeScript("arguments[0].click();", driver.findElement(newUserRadio));
+            //wait.until(ExpectedConditions.elementToBeSelected(driver.findElement(newUserRadio)));
+            Assert.assertTrue(driver.findElement(newUserRadio).isSelected());
+                        Utils.hardWait(2000);
+
+            //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", acceptToCheckbox);
+            jsExecutor.executeScript("arguments[0].click();", driver.findElement(acceptToCheckbox));
+            Assert.assertTrue(driver.findElement(acceptToCheckbox).isSelected());
+
+        
+    }
     public boolean isElementDisplayed(By by) {
         try {
             // Lưu ý: Đảm bảo biến 'wait' đã được khởi tạo trong class BasicTest
