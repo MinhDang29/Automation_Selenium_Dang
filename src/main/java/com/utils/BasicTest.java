@@ -50,6 +50,7 @@ public abstract class BasicTest {
         if (browser.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
+            options.addArguments("disable-notifications");
             driver = new ChromeDriver(options);
         }
         else if (browser.equalsIgnoreCase("edge")) {
